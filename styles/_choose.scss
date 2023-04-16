@@ -1,0 +1,52 @@
+.choose-panel {
+  z-index: 99;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #0000007a;
+  display: grid;
+  place-items: center;
+
+  .choose-panel__inner {
+    background-color: white;
+    padding: 0.2em 0.5em;
+    border-radius: 7px;
+    box-shadow: #666666 5px 5px 3px 3px;
+
+    width: min(100vw, 650px);
+    padding-bottom: 4em;
+
+    h1 {
+      text-align: center;
+      margin: 1em 0 2em 0;
+    }
+  }
+}
+
+.choose-panel__inner__options {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+
+  figure {
+    padding: 0.5em 1em;
+    border-radius: 10px;
+
+    transition: 0.2s all ease-in-out;
+    &:hover {
+      background-color: #78c2ff;
+      transform: scale(1.05);
+      color: white;
+    }
+
+    img {
+      width: 150px;
+      height: auto;
+    }
+    figcaption {
+      text-align: center;
+    }
+  }
+}

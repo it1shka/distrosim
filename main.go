@@ -22,6 +22,7 @@ func setupEnvironment(defaultEnv map[string]string) {
 
 func setupServer(server *gin.Engine) {
 	server.Static("/assets", "./assets")
+	server.Static("/images", "./images")
 	server.LoadHTMLGlob("html/*.html")
 	server.GET("/", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index.html", nil)

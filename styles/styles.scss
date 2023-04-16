@@ -1,0 +1,19 @@
+@use 'choose';
+@use 'computer';
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@200&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*.hidden {
+  display: none;
+}
+
+body {
+  font-family: 'Chivo Mono', monospace;
+  background-color: #f3f3f3;
+}
+

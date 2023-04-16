@@ -1,0 +1,37 @@
+.computer.Min { --color: #afebff; }
+.computer.Max { --color: #ffc0af; }
+.computer.MinMax { --color: #f0ffaf; }
+
+.computer {
+
+  cursor: pointer;
+  background-color: white;
+  transition: 0.2s all ease;
+  transition-property: background-color, transform;
+  &:hover {
+    background-color: var(--color, #dcdcdc);
+    transform: scale(1.05);
+  }
+
+  position: fixed;
+  padding: 0.5em 1em;
+  border-radius: 10px;
+  border: 1px solid grey;
+  box-shadow: #ccc 2px 2px 3px 3px;;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 75px;
+    height: auto;
+  }
+
+  figcaption {
+    font-size: 0.85em;
+    text-align: center;
+    user-select: none;
+  }
+}

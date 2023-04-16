@@ -5,8 +5,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DistroSim</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
-  <h1>This will be the main page: </h1>
+  <aside class="choose-panel hidden">
+    <div class="choose-panel__inner">
+      <h1> Choose computer type: </h1>
+      <div class="choose-panel__inner__options">
+        <figure computerType="Min">
+          <img src="/images/min_comp.png" alt="Min Computer">
+          <figcaption>Min Computer</figcaption>
+        </figure>
+
+        <figure computerType="Max">
+          <img src="/images/max_comp.png" alt="Max Computer">
+          <figcaption>Max Computer</figcaption>
+        </figure>
+
+        <figure computerType="MinMax">
+          <img src="/images/minmax_comp.png" alt="MinMax Computer">
+          <figcaption>MinMax Computer</figcaption>
+        </figure>
+      </div>
+    </div>
+  </aside>
+
+  <canvas id="fullscreen-canvas"></canvas>
+
+  <script defer type="module" src="/assets/main.js"></script>
 </body>
 </html>
