@@ -1,44 +1,30 @@
 #!/usr/bin/env python3
 
+from subprocess import run
 from textwrap import dedent
-import subprocess
-import os
 
-def get_port():
-  while True:
-    try:
-      port = int(input('Select port: '))
-      if port > 0:
-        return port
-      print('Port value should be positive')
-    except ValueError:
-      print('Port value should be integer')
+ts_error = run(['tsc'], capture_output=True, text=True).stderr
+sass_error = run(['sass', '--no-source-map', 'styles:assets'], capture_output=True, text=True).stderr
 
-def prompt_boolean(prompt):
-  while True:
-    answer = input(f'{prompt} [Y/n]: ').lower()
-    if not answer or answer == 'y':
-      return True
-    if answer == 'n':
-      return False
+if ts_error:
+  print('TypeScript errors: ')
+  print(ts_error)
 
-port = get_port()
+if sass_error:
+  print('SASS errors: ')
+  print(sass_error)
 
-def run_release():
-  running = subprocess.Popen('go run main.go', shell=True)
-  host = f'http://localhost:{port}'
-  open_command = 'sleep 2 && ' + (f'open {host}' if os.name == 'posix' else f'start {host}')
-  subprocess.Popen(open_command, shell=True)
-  running.wait()
+if not ts_error and not sass_error:
+  message = dedent('''
+    Build completed without any errors.
 
-with open('.env', 'w') as env:
-  env.write(dedent(f'''
+    Now you can modify your .env file:
+
+    PORT=<actual port, see documentation for HTTP and HTTPS common ports>
     GIN_MODE=release
-    PORT=:{port}
-  '''))
 
-subprocess.run(['tsc'])
-subprocess.run(['sass', '--no-source-map', 'styles:assets'])
+    and after that to run project in production, type:
 
-if prompt_boolean('Do you want to run release?'):
-  run_release()
+    $ go run main.go
+  ''').strip()
+  print(message)

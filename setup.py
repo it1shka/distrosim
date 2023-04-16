@@ -3,7 +3,6 @@
 import os
 from textwrap import dedent
 import subprocess
-import webbrowser
 
 # checking whether all the necessary files are prepared
 
@@ -22,7 +21,7 @@ if not os.path.exists('.env'):
       content = dedent('''
         GIN_MODE=debug
         PORT=:3000
-      ''')
+      ''').strip()
       file.write(content)
       print(f'Created ".env" file with the following content: {content}')
   except:
@@ -39,7 +38,7 @@ def node_installed():
 
 if not node_installed():
   print('Node JS is not installed on the computer. Please install it')
-  webbrowser.open('https://nodejs.org/en')
+  subprocess.run(['open', 'https://nodejs.org/en' ])
   exit(1)
 
 dependencies = ['nodemon', 'typescript', 'sass']
