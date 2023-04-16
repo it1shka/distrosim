@@ -1,6 +1,6 @@
 import { ComputerType } from './utils.js'
 
-export default class Computer {
+export default class ComputerElement {
   private ref: HTMLElement
   private _x = -1
   private _y = -1
@@ -23,10 +23,10 @@ export default class Computer {
     readonly computerType: ComputerType
   ) {
     this.ref = this.createRef()
-    this.x = positionX
-    this.y = positionY
     this.enableDragging()
     document.body.appendChild(this.ref)
+    this.x = positionX
+    this.y = positionY
   }
 
   private createRef() {
@@ -53,9 +53,11 @@ export default class Computer {
 
   private enableDragging() {
     this.ref.addEventListener('mousedown', () => {
+      this.ref.style.zIndex = '1'
       document.addEventListener('mousemove', this.onDrag)
     })
     this.ref.addEventListener('mouseup', () => {
+      this.ref.style.zIndex = '0'
       document.removeEventListener('mousemove', this.onDrag)
     })
   }

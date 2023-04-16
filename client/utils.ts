@@ -11,11 +11,15 @@ export function castToComputerType(value: string) {
   return value as ComputerType
 }
 
-export const chooseComputerType = () => new Promise<ComputerType>((resolve, reject) => {
-  const panel = document.querySelector('.choose-panel')
+export const chooseComputerType = () => new Promise<ComputerType | null>((resolve, reject) => {
+  const panel = document.querySelector<HTMLDivElement>('.choose-panel')
   if (panel === null) {
     reject('Failed to choose computer type: no panel was found')
     return
+  }
+  panel.onclick = () => {
+    panel.classList.add('hidden')
+    resolve(null)
   }
   const figures = panel.querySelectorAll('figure')
   figures.forEach(figure => {
@@ -24,7 +28,8 @@ export const chooseComputerType = () => new Promise<ComputerType>((resolve, reje
       console.warn('No computerType attribute was specified')
       return
     }
-    figure.onclick = () => {
+    figure.onclick = event => {
+      event.stopPropagation()
       panel.classList.add('hidden')
       try {
         const casted = castToComputerType(computerType)
