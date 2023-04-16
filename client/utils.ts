@@ -49,3 +49,13 @@ export function find<T extends Element = Element>(query: string) {
   }
   return maybeElement as T
 }
+
+export function eachPair<T>(array: T[]): Array<readonly [T, T]> {
+  const output = []
+  for (let i = 0; i < array.length; i++) {
+    for (let j = i + 1; j < array.length; j++) {
+      output.push([array[i], array[j]] as const)
+    }
+  }
+  return output
+}
