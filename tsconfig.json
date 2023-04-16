@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "ES6",
+    "lib": ["ES2019", "DOM"],
+    "target": "ES2019",
+    "outDir": "./assets",
+    "moduleResolution": "Node"
+  },
+  "include": [ "client" ]
+}
