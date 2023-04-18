@@ -1,5 +1,5 @@
 import { Process, generator } from './process.js'
-import { maybe } from './utils.js'
+import { distance, maxBy, maybe, minBy, remove } from './utils.js'
 
 export const enum ComputerType {
   MIN = 'Min',
@@ -103,6 +103,10 @@ class ComputerNode {
   setName(name: string) {
     this.nameCaption.textContent = name
   }
+
+  remove() {
+    document.body.removeChild(this.root)
+  }
 }
 
 interface ComputerProperties {
@@ -173,8 +177,88 @@ export class Computer {
     this.balance()
   }
 
+  // additional functions
+  getRequestNeighbors() {
+    return Array.from(this.neighbors)
+      .sort((a, b) => {
+        const p = this.getPosition()
+        const ad = distance(a.getPosition(), p)
+        const bd = distance(b.getPosition(), p)
+        return ad - bd
+      })
+      .slice(0, this.props.requestThreshold)
+  }
+
+  forcedProcess(process: Process) {
+    this.processes.push(process)
+  }
+
+  dispose() {
+    this.node.remove()
+    this.neighbors.forEach(computer => {
+      computer.disconnectFrom(this)
+      this.disconnectFrom(computer)
+    })
+    this.neighbors.clear()
+    while (this.processes.length > 0) {
+      this.processes.pop()
+    }
+  }
+
+  requestSendProcess(process: Process): boolean {
+    const maxThreshold = 100 - this.props.workloadThreshold
+    if (this.workload + process.workload > maxThreshold) {
+      return false
+    }
+    this.processes.push(process)
+    return true
+  }
+
+  requestReceiveProcess(expectedWorkload: number): Process | null {
+    const type = this.props.computerType
+    if ((type === ComputerType.MIN || type === ComputerType.MINMAX) && this.workload <= this.props.workloadThreshold) {
+      return null
+    }
+    const processes = this.processes
+      .filter(process => process.workload <= expectedWorkload)
+    const bestProcess = maxBy(processes, process => process.workload)
+    remove(processes, bestProcess)
+    return bestProcess
+  }
+
   // function for balancing workload
   private balance() {
+    const type = this.props.computerType
+    if (type === ComputerType.MIN || type === ComputerType.MINMAX) {
+      this.balanceMin()
+    }
+    if (type === ComputerType.MAX || type === ComputerType.MINMAX) {
+      this.balanceMax()
+    }
+  }
 
+  private balanceMin() {
+    const minThreshold = this.props.workloadThreshold
+    if (this.workload >= minThreshold) return
+    for (const each of this.getRequestNeighbors()) {
+      const maybeProcess = each.requestReceiveProcess(minThreshold - this.workload)
+      if (maybeProcess != null) {
+        this.processes.push(maybeProcess)
+        break
+      }
+    }
+  }
+
+  private balanceMax() {
+    const maxThreshold = 100 - this.props.workloadThreshold
+    if (this.workload <= maxThreshold) return
+    const minimal = minBy(this.processes, process => process.workload)
+    if (minimal === null) return
+    for (const each of this.getRequestNeighbors()) {
+      if (each.requestSendProcess(minimal)) {
+        remove(this.processes, minimal)
+        break
+      }
+    }
   }
 }

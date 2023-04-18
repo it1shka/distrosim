@@ -23,5 +23,9 @@ canvas.onclick = async event => {
   if (computerType === null) return
   const {clientX, clientY} = event
   const computer = new Computer(computerType, clientX, clientY)
+  for (const each of computers) {
+    computer.connectTo(each)
+    each.connectTo(computer)
+  }
   computers.push(computer)
 }

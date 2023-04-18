@@ -73,3 +73,41 @@ export function maybe<T>(probability: number, action: () => T): T | null {
   }
   return null
 }
+
+export function distance([x1, y1]: readonly [number, number], [x2, y2]: readonly [number, number]) {
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
+}
+
+export function maxBy<T>(array: T[], selector: (value: T) => number) {
+  let max = -Infinity
+  let maxElement: T | null = null
+  for (const each of array) {
+    const comp = selector(each)
+    if (comp > max) {
+      max = comp
+      maxElement = each
+    }
+  }
+  return maxElement
+}
+
+export function minBy<T>(array: T[], selector: (value: T) => number) {
+  let min = Infinity
+  let minElement: T | null = null
+  for (const each of array) {
+    const comp = selector(each)
+    if (comp < min) {
+      min = comp
+      minElement = each
+    }
+  }
+  return minElement
+}
+
+
+export function remove<T>(array: T[], element: T) {
+  const index = array.indexOf(element)
+  if (index === -1) return false
+  array.splice(index, 1)
+  return true
+}
