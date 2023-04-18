@@ -77,6 +77,10 @@ class ComputerNode {
 
   // getters and setters
 
+  getReference() {
+    return this.root
+  }
+
   setComputerType(computerType: ComputerType) {
     const [imageSource, imageCaptionText] = ComputerNode.getComputerImageAndCaption(computerType)
     this.image.src = imageSource
@@ -130,6 +134,7 @@ export class Computer {
   getProcesses()  { return [...this.processes]     }
   getWorkload()   { return this.workload           }
   getPosition()   { return this.node.getPosition() }
+  getReference()  { return this.node.getReference()}
   
   constructor (
     computerType: ComputerType,

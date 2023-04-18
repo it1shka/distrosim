@@ -104,7 +104,6 @@ export function minBy<T>(array: T[], selector: (value: T) => number) {
   return minElement
 }
 
-
 export function remove<T>(array: T[], element: T) {
   const index = array.indexOf(element)
   if (index === -1) return false
