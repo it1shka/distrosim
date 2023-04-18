@@ -8,7 +8,7 @@ const canvas = find<HTMLCanvasElement>('#fullscreen-canvas')
 const drawer = new Drawer(canvas)
 
 setInterval(() => {
-  const positions = computers.map(computer => computer.position)
+  const positions = computers.map(computer => computer.getPosition())
   drawer.clear()
   drawer.drawGrid()
   drawer.connectPoints(positions, false)

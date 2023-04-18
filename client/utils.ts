@@ -55,3 +55,14 @@ export function eachPair<T>(array: T[]): Array<readonly [T, T]> {
   }
   return output
 }
+
+export function randInt(start: number, end: number) {
+  const delta = end - start + 1
+  const value = start + Math.random() * delta
+  return ~~value
+}
+
+export function randomElement<T>(array: T[]) {
+  const index = randInt(0, array.length - 1)
+  return array[index]
+}
