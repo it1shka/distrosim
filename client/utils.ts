@@ -66,3 +66,10 @@ export function randomElement<T>(array: T[]) {
   const index = randInt(0, array.length - 1)
   return array[index]
 }
+
+export function maybe<T>(probability: number, action: () => T): T | null {
+  if (randInt(1, 100) <= probability) {
+    return action()
+  }
+  return null
+}

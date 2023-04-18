@@ -8,6 +8,10 @@ const canvas = find<HTMLCanvasElement>('#fullscreen-canvas')
 const drawer = new Drawer(canvas)
 
 setInterval(() => {
+  computers.forEach(computer => computer.update())
+}, 250)
+
+setInterval(() => {
   const positions = computers.map(computer => computer.getPosition())
   drawer.clear()
   drawer.drawGrid()

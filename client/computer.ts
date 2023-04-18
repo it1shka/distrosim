@@ -1,4 +1,5 @@
-import { Process } from './process.js'
+import { Process, generator } from './process.js'
+import { maybe } from './utils.js'
 
 export const enum ComputerType {
   MIN = 'Min',
@@ -95,7 +96,8 @@ class ComputerNode {
 
   setWorkload(workload: number) {
     this.percentCaption.textContent = `${workload}%`
-    this.root.style.backgroundColor = `hsv(10, ${workload}%, 100%)`
+    const color = ~~(100 - workload / 2)
+    this.root.style.backgroundColor = `hsl(6, 100%, ${color}%)`
   }
 
   setName(name: string) {
@@ -108,6 +110,7 @@ interface ComputerProperties {
   name: string
   workloadThreshold: number
   requestThreshold: number
+  processCoefficient: number
 }
 
 export class Computer {
@@ -134,7 +137,8 @@ export class Computer {
       computerType,
       name: 'New Computer',
       workloadThreshold: 20,
-      requestThreshold: 5
+      requestThreshold: 5,
+      processCoefficient: 2
     }
   }
 
@@ -156,6 +160,21 @@ export class Computer {
 
   // main method for updating
   update() {
-    
+    this.processes.forEach(process => process.execute())
+    this.workload = this.processes
+      .map(process => process.workload)
+      .reduce((a, b) => a + b, 0)
+    this.node.setWorkload(this.workload)
+    this.processes = this.processes.filter(process => process.active)
+    maybe(this.props.processCoefficient, () => {
+      const process = generator.getRandomProcess()
+      this.processes.push(process)
+    })
+    this.balance()
+  }
+
+  // function for balancing workload
+  private balance() {
+
   }
 }
