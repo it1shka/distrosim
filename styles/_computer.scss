@@ -8,7 +8,7 @@
   background-color: white;
   transition: 0.2s all ease;
   transition-property: background-color, transform;
-  &:hover {
+  &:hover, &.active {
     background-color: var(--color, #dcdcdc);
     transform: scale(1.05);
   }

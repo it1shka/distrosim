@@ -1,8 +1,4 @@
-export const enum ComputerType {
-  MIN = 'Min',
-  MAX = 'Max', 
-  MINMAX = 'MinMax'
-}
+import { ComputerType } from './computer.js'
 
 export function castToComputerType(value: string) {
   if (!['Min', 'Max', 'MinMax'].includes(value)) {
