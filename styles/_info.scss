@@ -1,0 +1,72 @@
+$margin: 10px;
+.computer-panel {
+  position: fixed;
+  z-index: 10;
+  top: $margin;
+  right: $margin;
+
+  width: min(460px, 100vw);
+  height: calc(100vh - $margin * 2);
+  overflow: auto;
+
+  background-color: white;
+  padding: 1em 2em;
+  border-radius: 7px;
+  box-shadow: #c5c5c5 0px 0px 3px 3px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > * + * {
+    margin-top: 1em;
+  }
+}
+
+.computer-panel {
+  // all the widgets inside
+  div {
+    width: 100%;
+  }
+
+  label {
+    color: grey;
+    margin: 0.1em 0.2em;
+  }
+
+  input, select {
+    $active-color: #c0daff;
+    background-color: white;
+    font-size: 1.25em;
+    font-family: inherit;
+    padding: 0.3em 0.55em;
+    width: 100%;
+    outline: none;
+
+    box-shadow: #e7e7e7 1px 1px 3px 3px;
+    border: 1px solid #e3e3e3;
+    &:focus {
+      box-shadow: $active-color 1px 1px 3px 3px;
+      border: 1px solid $active-color;
+      color: darken($active-color, 50%);
+      transform: scale(1.025);
+    }
+    transition: 0.3s all ease;
+  }
+
+  button {
+    $background-color: #920092;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    background-color: $background-color;
+    color: white;
+    border: none;
+    border-radius: 7px;
+
+    &:hover {
+      background-color: darken($background-color, 10%);
+      transform: scale(1.025);
+      box-shadow: darken($background-color, 10%) 0px 0px 3px 3px;
+    }
+    transition: 0.2s all ease;
+  }
+}

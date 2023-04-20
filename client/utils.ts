@@ -110,3 +110,20 @@ export function remove<T>(array: T[], element: T) {
   array.splice(index, 1)
   return true
 }
+
+export function delay(time: number) {
+  return new Promise<void>(resolve => setTimeout(resolve, time))
+}
+
+export async function showAlert(message: string) {
+  const alertModal = document.createElement('div')
+  alertModal.textContent = message
+  alertModal.classList.add('alert-modal')
+  document.body.appendChild(alertModal)
+  await delay(50)
+  alertModal.classList.add('active')
+  await delay(4000)
+  alertModal.classList.remove('active')
+  await delay(2000)
+  document.body.removeChild(alertModal)
+}

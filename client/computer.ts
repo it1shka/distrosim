@@ -113,7 +113,7 @@ class ComputerNode {
   }
 }
 
-interface ComputerProperties {
+export interface ComputerProperties {
   computerType: ComputerType
   name: string
   workloadThreshold: number
