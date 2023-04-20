@@ -72,9 +72,16 @@ export default class Supervisor {
   }
 
   private onComputerClick = (computer: Computer) => {
+    const currentRef = computer.getReference()
     if (this.selectedComputer === computer) {
+      currentRef.classList.remove('active')
       this.selectedComputer = null
     } else {
+      currentRef.classList.add('active')
+      const prevRef = this.selectedComputer?.getReference()
+      if (prevRef !== null) {
+        prevRef?.classList.remove('active')
+      }
       this.selectedComputer = computer
     }
     this.updateComputerPanel()
