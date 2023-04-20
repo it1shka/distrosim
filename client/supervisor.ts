@@ -13,6 +13,10 @@ export default class Supervisor {
   private panel = find<HTMLDivElement>('.computer-panel')
   private computerForm = new ComputerInformationForm(this.panel)
 
+  // dynamic stats
+  private neighborsList = find<HTMLUListElement>('#neighbors-list')
+  private processesList = find<HTMLUListElement>('#processes-list')
+
   constructor() {
     const canvas = find<HTMLCanvasElement>('#fullscreen-canvas')
     canvas.onclick = this.onCanvasClick
@@ -53,6 +57,7 @@ export default class Supervisor {
     for (const each of this.computers) {
       each.update()
     }
+    this.updateProcessesList()
   }
 
   private onCanvasClick = async ({clientX, clientY}: MouseEvent) => {
@@ -69,6 +74,7 @@ export default class Supervisor {
     computer.getReference()
       .addEventListener('dblclick', () => this.onComputerClick(computer))
     this.computers.push(computer)
+    this.onComputerClick(computer)
   }
 
   private onComputerClick = (computer: Computer) => {
@@ -94,6 +100,7 @@ export default class Supervisor {
     }
     this.panel.classList.remove('hidden')
     this.computerForm.loadComputerProperties(this.selectedComputer.getProperties())
+    this.updateProcessesList()
   }
 
   private onFormApply = () => {
@@ -105,6 +112,27 @@ export default class Supervisor {
       return
     }
     this.selectedComputer.setProperties(maybeProps)
+  }
+
+  private updateProcessesList() {
+    if (this.selectedComputer === null) return
+
+    const processes = this.selectedComputer.getProcesses()
+    while (processes.length > this.processesList.childNodes.length) {
+      this.processesList.appendChild(document.createElement('li'))
+    } 
+    while (processes.length < this.processesList.childNodes.length) {
+      this.processesList.removeChild(this.processesList.lastChild!)
+    }
+
+    var listElements = Array.from(this.processesList.childNodes)
+    for (let i = 0; i < processes.length; i++) {
+      const element = listElements[i]
+      const {name, workload} = processes[i]
+      element.textContent = `${name} (${workload}%)`
+      const color = ~~(100 - workload / 2);
+      (element as HTMLElement).style.backgroundColor = `hsl(6, 100%, ${color}%)`
+    }
   }
 }
 
