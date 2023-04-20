@@ -27,15 +27,19 @@ export default class Supervisor {
       this.drawer.connectPoints(points)
     }
     if (this.selectedComputer === null) return
+
     const selectedPoints = this.getJoinedPoints(this.selectedComputer)
-    this.drawer.connectPoints(selectedPoints, true)
+    const origin = selectedPoints[0]
+    for (let i = 1; i < selectedPoints.length; i++) {
+      this.drawer.connectPoints([ selectedPoints[i], origin ], true)
+    }
   }
 
   private getJoinedPoints(computer: Computer) {
     const connected = computer
         .getNeighbors()
         .map(each => each.getPosition())
-      connected.push(computer.getPosition())
+    connected.unshift(computer.getPosition())
     return connected
   }
 
@@ -49,16 +53,23 @@ export default class Supervisor {
     const computerType = await chooseComputerType()
     if (computerType === null) return
     const computer = new Computer(computerType, clientX, clientY)
-    // for (const each of this.computers) {
-    //   computer.connectTo(each)
-    //   each.connectTo(computer)
-    // }
+
+    // just for a test right now
+    for (const each of this.computers) {
+      computer.connectTo(each)
+      each.connectTo(computer)
+    }
+
     computer.getReference()
-      .addEventListener('click', () => this.onComputerClick(computer))
+      .addEventListener('dblclick', () => this.onComputerClick(computer))
     this.computers.push(computer)
   }
 
   private onComputerClick = (computer: Computer) => {
-    // TODO: 
+    if (this.selectedComputer === computer) {
+      this.selectedComputer = null
+    } else {
+      this.selectedComputer = computer
+    }
   }
 }
