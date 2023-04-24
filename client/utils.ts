@@ -1,4 +1,5 @@
 import { ComputerType } from './computer.js'
+import Drawer, { Point } from './drawer.js'
 
 export function castToComputerType(value: string) {
   if (!['Min', 'Max', 'MinMax'].includes(value)) {
@@ -44,16 +45,6 @@ export function find<T extends Element = Element>(query: string) {
     throw new Error(`Failed to find element "${query}"`)
   }
   return maybeElement as T
-}
-
-export function eachPair<T>(array: T[]): Array<readonly [T, T]> {
-  const output = []
-  for (let i = 0; i < array.length; i++) {
-    for (let j = i + 1; j < array.length; j++) {
-      output.push([array[i], array[j]] as const)
-    }
-  }
-  return output
 }
 
 export function randInt(start: number, end: number) {
@@ -126,4 +117,19 @@ export async function showAlert(message: string) {
   alertModal.classList.remove('active')
   await delay(2000)
   document.body.removeChild(alertModal)
+}
+
+const migrationTime = 1500
+export async function showMigration(migrationName: string, [x1, y1]: Point, [x2, y2]: Point) {
+  const mark = document.createElement('div')
+  mark.classList.add('migration')
+  mark.textContent = migrationName
+  mark.style.left = `${x1}px`
+  mark.style.top = `${y1}px`
+  document.body.appendChild(mark)
+  await delay(20)
+  mark.style.left = `${x2}px`
+  mark.style.top = `${y2}px`
+  await delay(migrationTime)
+  document.body.removeChild(mark)
 }

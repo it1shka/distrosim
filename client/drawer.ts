@@ -1,6 +1,8 @@
-import { eachPair } from './utils.js'
+import { find } from './utils.js'
 
-export default class Drawer {
+export type Point = readonly [number, number]
+
+class Drawer {
   private ctx: CanvasRenderingContext2D
 
   private clearColor = 'rgba(0,0,0,0)'
@@ -56,7 +58,7 @@ export default class Drawer {
     this.gridOffset %= this.gridGap
   }
 
-  connectPoints(from: readonly [number, number], points: Array<readonly [number, number]>, highlighted = false) {
+  connectPoints(from: Point, points: Array<Point>, highlighted = false) {
     this.ctx.strokeStyle = highlighted ? this.highlightColor : this.wireColor
     this.ctx.lineWidth = highlighted ? 4 : 2
     for (const each of points) {
@@ -64,3 +66,6 @@ export default class Drawer {
     }
   }
 }
+
+const canvas = find<HTMLCanvasElement>('#fullscreen-canvas')
+export default new Drawer(canvas)

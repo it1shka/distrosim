@@ -5,7 +5,6 @@ import { chooseComputerType, find, showAlert } from './utils.js'
 export default class Supervisor {
   private selectedComputer: Computer | null = null
   private computers = new Array<Computer>()
-  private drawer: Drawer
 
   private drawDeltaTime = 1000 / 60
   private updateDeltaTime = 250
@@ -21,7 +20,6 @@ export default class Supervisor {
   constructor() {
     const canvas = find<HTMLCanvasElement>('#fullscreen-canvas')
     canvas.onclick = this.onCanvasClick
-    this.drawer = new Drawer(canvas)
 
     const button = find<HTMLButtonElement>("#apply-button")
     button.onclick = this.onFormApply
@@ -31,17 +29,17 @@ export default class Supervisor {
   }
 
   private drawLoop = () => {
-    this.drawer.clear()
-    this.drawer.drawGrid()
+    Drawer.clear()
+    Drawer.drawGrid()
     for (const each of this.computers) {
       const points = this.getNeighborPoints(each)
-      this.drawer.connectPoints(each.getPosition(), points, each === this.selectedComputer)
+      Drawer.connectPoints(each.getPosition(), points, each === this.selectedComputer)
     }
 
     const selected = this.selectedComputer
     if (selected === null) return
     const points = this.getNeighborPoints(selected)
-    this.drawer.connectPoints(selected.getPosition(), points, true)
+    Drawer.connectPoints(selected.getPosition(), points, true)
   }
 
   private getNeighborPoints(computer: Computer) {

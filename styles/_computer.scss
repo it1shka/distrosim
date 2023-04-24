@@ -3,7 +3,6 @@
 .computer.MinMax { --color: #dbafff; }
 
 .computer {
-
   cursor: pointer;
   background-color: white;
   transition: 0.2s all ease;
@@ -34,4 +33,14 @@
     text-align: center;
     user-select: none;
   }
+}
+
+.migration {
+  position: fixed;
+  z-index: 0;
+  padding: 0.25em;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 7px;
+  transition: 1.5s all ease-in-out;
 }

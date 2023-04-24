@@ -1,5 +1,5 @@
 import { Process, generator } from './process.js'
-import { distance, maxBy, maybe, minBy, remove } from './utils.js'
+import { distance, maxBy, maybe, minBy, remove, showMigration } from './utils.js'
 
 export const enum ComputerType {
   MIN = 'Min',
@@ -254,6 +254,7 @@ export class Computer {
       const maybeProcess = each.requestReceiveProcess(minThreshold - this.workload)
       if (maybeProcess != null) {
         this.processes.push(maybeProcess)
+        showMigration(maybeProcess.name, each.getPosition(), this.getPosition())
         break
       }
     }
@@ -267,6 +268,7 @@ export class Computer {
     for (const each of this.getRequestNeighbors()) {
       if (each.requestSendProcess(minimal)) {
         remove(this.processes, minimal)
+        showMigration(minimal.name, this.getPosition(), each.getPosition())
         break
       }
     }
