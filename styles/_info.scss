@@ -78,7 +78,10 @@ $margin: 10px;
     list-style-type: none;
     width: 100%;
 
-    li { padding: 0.2em 0.5em; }
+    li { 
+      transition: 0.25s background-color ease;
+      padding: 0.2em 0.5em; 
+    }
   }
 
   .neighbors-list {

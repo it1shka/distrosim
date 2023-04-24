@@ -16,6 +16,7 @@ export default class Supervisor {
   // dynamic stats
   private neighborsList = find<HTMLUListElement>('#neighbors-list')
   private processesList = find<HTMLUListElement>('#processes-list')
+  private deleteButton = find<HTMLButtonElement>("#delete-button")
 
   constructor() {
     const canvas = find<HTMLCanvasElement>('#fullscreen-canvas')
@@ -96,6 +97,13 @@ export default class Supervisor {
       return
     }
     this.computerForm.loadComputerProperties(this.selectedComputer.getProperties())
+    this.deleteButton.onclick = () => {
+      if (this.selectedComputer === null) return
+      this.selectedComputer.dispose()
+      this.computers = this.computers.filter(computer => computer !== this.selectedComputer)
+      this.selectedComputer = null
+      this.updateComputerPanel()
+    }
     this.updateProcessesList()
     this.updateNeighborsList()
     this.panel.classList.remove('hidden')
