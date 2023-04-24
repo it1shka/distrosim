@@ -33,23 +33,20 @@ export default class Supervisor {
     this.drawer.clear()
     this.drawer.drawGrid()
     for (const each of this.computers) {
-      const points = this.getJoinedPoints(each)
-      this.drawer.connectPoints(points)
+      const points = this.getNeighborPoints(each)
+      this.drawer.connectPoints(each.getPosition(), points, each === this.selectedComputer)
     }
-    if (this.selectedComputer === null) return
 
-    const selectedPoints = this.getJoinedPoints(this.selectedComputer)
-    const origin = selectedPoints[0]
-    for (let i = 1; i < selectedPoints.length; i++) {
-      this.drawer.connectPoints([ selectedPoints[i], origin ], true)
-    }
+    const selected = this.selectedComputer
+    if (selected === null) return
+    const points = this.getNeighborPoints(selected)
+    this.drawer.connectPoints(selected.getPosition(), points, true)
   }
 
-  private getJoinedPoints(computer: Computer) {
+  private getNeighborPoints(computer: Computer) {
     const connected = computer
         .getNeighbors()
         .map(each => each.getPosition())
-    connected.unshift(computer.getPosition())
     return connected
   }
 
@@ -98,9 +95,10 @@ export default class Supervisor {
       this.panel.classList.add('hidden')
       return
     }
-    this.panel.classList.remove('hidden')
     this.computerForm.loadComputerProperties(this.selectedComputer.getProperties())
     this.updateProcessesList()
+    this.updateNeighborsList()
+    this.panel.classList.remove('hidden')
   }
 
   private onFormApply = () => {
@@ -114,24 +112,58 @@ export default class Supervisor {
     this.selectedComputer.setProperties(maybeProps)
   }
 
+  private applyLengthToListElement(list: HTMLElement, length: number) {
+    while (length > list.children.length) {
+      list.append(document.createElement('li'))
+    }
+    while (length < list.children.length) {
+      list.removeChild(list.lastElementChild!)
+    }
+  }
+
   private updateProcessesList() {
     if (this.selectedComputer === null) return
-
     const processes = this.selectedComputer.getProcesses()
-    while (processes.length > this.processesList.childNodes.length) {
-      this.processesList.appendChild(document.createElement('li'))
-    } 
-    while (processes.length < this.processesList.childNodes.length) {
-      this.processesList.removeChild(this.processesList.lastChild!)
-    }
-
-    var listElements = Array.from(this.processesList.childNodes)
+    this.applyLengthToListElement(this.processesList, processes.length)
+    var listElements = Array.from(this.processesList.children)
     for (let i = 0; i < processes.length; i++) {
       const element = listElements[i]
       const {name, workload} = processes[i]
       element.textContent = `${name} (${workload}%)`
       const color = ~~(100 - workload / 2);
       (element as HTMLElement).style.backgroundColor = `hsl(6, 100%, ${color}%)`
+    }
+  }
+
+  private updateNeighborsList() {
+    if (this.selectedComputer === null) return
+    const neighbors = this.computers.filter(computer => computer !== this.selectedComputer)
+    this.applyLengthToListElement(this.neighborsList, neighbors.length)
+    const neighborsElements = Array.from(this.neighborsList.children)
+    for (let i = 0; i < neighbors.length; i++) {
+      const neighbor = neighbors[i]
+      const element = neighborsElements[i] as HTMLElement
+      element.textContent = neighbor.getName()
+      if (this.selectedComputer.isConnected(neighbor)) {
+        element.classList.add('connected')
+      } else {
+        element.classList.remove('connected')
+      }
+      // todo: onclick removes or adds connection
+      element.onclick = () => {
+        if (this.selectedComputer === null) {
+          return
+        }
+        if (this.selectedComputer.isConnected(neighbor)) {
+          element.classList.remove('connected')
+          this.selectedComputer.disconnectFrom(neighbor)
+          neighbor.disconnectFrom(this.selectedComputer)
+        } else {
+          element.classList.add('connected')
+          this.selectedComputer.connectTo(neighbor)
+          neighbor.connectTo(this.selectedComputer)
+        }
+      }
     }
   }
 }

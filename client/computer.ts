@@ -135,6 +135,7 @@ export class Computer {
   getWorkload()   { return this.workload           }
   getPosition()   { return this.node.getPosition() }
   getReference()  { return this.node.getReference()}
+  getName()       { return `${this.props.name} (${this.props.computerType})` }
   
   constructor (
     computerType: ComputerType,
@@ -161,6 +162,10 @@ export class Computer {
   // some functions to connect/disconnect to neighbors
   connectTo(computer: Computer) {
     this.neighbors.add(computer)
+  }
+
+  isConnected(computer: Computer) {
+    return this.neighbors.has(computer)
   }
 
   disconnectFrom(computer: Computer) {

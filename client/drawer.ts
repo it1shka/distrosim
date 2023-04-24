@@ -56,11 +56,11 @@ export default class Drawer {
     this.gridOffset %= this.gridGap
   }
 
-  connectPoints(points: Array<readonly [number, number]>, highlighted = false) {
+  connectPoints(from: readonly [number, number], points: Array<readonly [number, number]>, highlighted = false) {
     this.ctx.strokeStyle = highlighted ? this.highlightColor : this.wireColor
     this.ctx.lineWidth = highlighted ? 4 : 2
-    for (const [a, b] of eachPair(points)) {
-      this.drawLine(...a, ...b)
+    for (const each of points) {
+      this.drawLine(...from, ...each)
     }
   }
 }

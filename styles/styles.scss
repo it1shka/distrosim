@@ -19,3 +19,25 @@ body {
   background-color: #f3f3f3;
 }
 
+// hiding crollbar 
+
+/* Hide scrollbar for all elements */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Edge and IE */
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+* {
+  overflow: -moz-scrollbars-none;
+}

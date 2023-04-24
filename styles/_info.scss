@@ -15,6 +15,7 @@ $margin: 10px;
   box-shadow: #c5c5c5 0px 0px 3px 3px;
 
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   align-items: center;
   & > * + * {
@@ -76,8 +77,30 @@ $margin: 10px;
   .processes-list {
     list-style-type: none;
     width: 100%;
-    max-height: 500px;
-    overflow-y: auto;
+
     li { padding: 0.2em 0.5em; }
+  }
+
+  .neighbors-list {
+    list-style-type: none;
+    width: 100%;
+
+    & > li + li {
+      margin-top: 0.5em;
+    }
+
+    li {
+      $connected-color: #cbffe2;
+      padding: 0.5em 1em;
+      border: 1px solid black;
+
+      cursor: pointer;
+      user-select: none;
+
+      &.connected {
+        background-color: $connected-color;
+        border: 1px solid darken($connected-color, 50%);
+      }
+    }
   }
 }
