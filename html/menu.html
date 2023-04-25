@@ -1,0 +1,40 @@
+{{ template "header" "Menu" }}
+
+<p id="binary-animation"></p>
+
+<div class="menu">
+  <nav class="menu__inner">
+    <h1>Menu: </h1>
+
+    <a class="menu-element" href="/">
+      <img src="/images/computer_icon.png">
+      <p>Main Editor</p>
+    </a>
+
+    <a class="menu-element" href="/gallery">
+      <img src="/images/database-storage.png">
+      <p>Gallery of Networks</p>
+    </a>
+
+    <a class="menu-element" href="https://github.com/it1shka/distrosim">
+      <img src="/images/github.png">
+      <p>Project Github Page</p>
+    </a>
+  </nav>
+</div>
+
+<script>
+  const element = document.querySelector('#binary-animation')
+  const tick = time => new Promise(resolve => setTimeout(resolve, time))
+  const animation = async () => {
+    document.body.style.overflow = 'hidden'
+    while (true) {
+      const content = Array.from(new Array(5000), () => Math.random() > 0.5 ? '1' : '0').join('')
+      element.textContent = content
+      await tick(100)
+    }
+  }
+  animation()
+</script>
+
+{{ template "footer"}}

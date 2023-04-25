@@ -1,3 +1,5 @@
+$shadow: #353535;
+
 #menu-button {
   $background: #ffd992;
   position: fixed;
@@ -16,4 +18,73 @@
   &:hover {
     background-color: darken($background, 25%);
   }
+}
+
+.menu {
+  position: absolute;
+  top: 0;bottom: 0;left: 0;right: 0;
+  overflow: hidden;
+  background-color: #000000c9;
+  display: grid;
+  place-content: center;
+
+  .menu__inner {
+    transform: translateY(-100px);
+    h1 {
+      color: #000f33;
+      margin-bottom: 0.5em;
+    }
+
+    background-color: white;
+    padding: 1em;
+    padding-bottom: 2em;
+    width: min(100vw, 400px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: 7px;
+    $offset: 10px;
+    box-shadow: $shadow $offset $offset 0px 0px;
+  }
+}
+
+.menu-element {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.2em 0.5em;
+  border: 1px solid white;
+  border-radius: 7px;
+  margin: 0.5em;
+
+  & > * + * {
+    margin-left: 0.75em;
+  }
+
+  img {
+    width: 45px;
+    height: auto;
+    border-radius: 100%;
+    overflow: hidden;
+  }
+
+  p {
+    font-size: 1.2em;
+    color: black;
+  }
+
+  transition: 0.25s all ease-in-out;
+  &:hover {
+    border: 1px solid $shadow;
+    box-shadow: $shadow 2px 2px 0px 0px;
+    transform: scale(1.10);
+    margin: 1em 0.5em 1em 0.5em;
+  }
+}
+
+#binary-animation {
+  font-size: 1.5em;
+  word-wrap: break-word;
+  color: #219e21;
 }

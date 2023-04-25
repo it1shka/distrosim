@@ -27,6 +27,9 @@ func setupServer(server *gin.Engine) {
 	server.GET("/", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index.html", nil)
 	})
+	server.GET("/menu", func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "menu.html", nil)
+	})
 	server.NoRoute(func(ctx *gin.Context) {
 		ctx.HTML(http.StatusNotFound, "404.html", nil)
 	})
