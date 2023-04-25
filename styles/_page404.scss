@@ -1,0 +1,13 @@
+#page-404 {
+  height: 100vh;
+  overflow: hidden;
+  background-color: #1f1f1f;
+  display: grid;
+  place-items: center;
+
+  h1 {
+    font-size: 2.5em;
+    transform: translateY(-100px);
+    color: #219e21;
+  }
+}

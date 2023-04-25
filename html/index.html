@@ -1,92 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DistroSim</title>
-  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-  <link rel="stylesheet" href="/assets/styles.css">
-</head>
-<body>
-  <aside class="choose-panel hidden">
-    <div class="choose-panel__inner">
-      <h1> Choose computer type: </h1>
-      <div class="choose-panel__inner__options">
-        <figure computerType="Min">
-          <img src="/images/min_comp.png" alt="Min Computer">
-          <figcaption>Min Computer</figcaption>
-        </figure>
+{{ template "header" "DistroSim" }}
 
-        <figure computerType="Max">
-          <img src="/images/max_comp.png" alt="Max Computer">
-          <figcaption>Max Computer</figcaption>
-        </figure>
+<aside class="choose-panel hidden">
+  <div class="choose-panel__inner">
+    <h1> Choose computer type: </h1>
+    <div class="choose-panel__inner__options">
+      <figure computerType="Min">
+        <img src="/images/min_comp.png" alt="Min Computer">
+        <figcaption>Min Computer</figcaption>
+      </figure>
 
-        <figure computerType="MinMax">
-          <img src="/images/minmax_comp.png" alt="MinMax Computer">
-          <figcaption>MinMax Computer</figcaption>
-        </figure>
-      </div>
+      <figure computerType="Max">
+        <img src="/images/max_comp.png" alt="Max Computer">
+        <figcaption>Max Computer</figcaption>
+      </figure>
+
+      <figure computerType="MinMax">
+        <img src="/images/minmax_comp.png" alt="MinMax Computer">
+        <figcaption>MinMax Computer</figcaption>
+      </figure>
     </div>
-  </aside>
+  </div>
+</aside>
 
-  <aside class="computer-panel hidden">
-    <h2>Computer information: </h2>
-    <div>
-      <label for="computer-name">Computer name:</label>
-      <input name="computer name" id="computer-name" placeholder="Computer name...">
-    </div>
-    <div>
-      <label for="computer-type">Computer type: </label>
-      <select name="computer type" id="computer-type">
-        <option value="Min">Min</option>
-        <option value="Max">Max</option>
-        <option value="MinMax">MinMax</option>
-      </select>
-    </div>
-    <div>
-      <label for="workload-threshold">Workload threshold: </label>
-      <input name="workload threshold" id="workload-threshold" 
-        type="number" value="1"
-        min="0" max="50" step="1"
-        placeholder="Workload threshold...">
-    </div>
-    <div>
-      <label for="request-threshold">Request threshold: </label>
-      <input name="request threshold" id="request-threshold" 
-        type="number" value="5"
-        min="0" max="100" step="1"
-        placeholder="Request threshold...">
-    </div>
-    <div>
-      <label for="load-coefficient">Load coefficient: </label>
-      <input name="load coefficient" id="load-coefficient" 
-        type="number" value="2"
-        min="0" max="100" step="1"
-        placeholder="Load coefficient...">
-    </div>
-    <span>
-      <button id="apply-button">Apply</button>
-      <button id="delete-button">Delete</button>
-    </span>
+<aside class="computer-panel hidden">
+  <h2>Computer information: </h2>
+  <div>
+    <label for="computer-name">Computer name:</label>
+    <input name="computer name" id="computer-name" placeholder="Computer name...">
+  </div>
+  <div>
+    <label for="computer-type">Computer type: </label>
+    <select name="computer type" id="computer-type">
+      <option value="Min">Min</option>
+      <option value="Max">Max</option>
+      <option value="MinMax">MinMax</option>
+    </select>
+  </div>
+  <div>
+    <label for="workload-threshold">Workload threshold: </label>
+    <input name="workload threshold" id="workload-threshold" 
+      type="number" value="1"
+      min="0" max="50" step="1"
+      placeholder="Workload threshold...">
+  </div>
+  <div>
+    <label for="request-threshold">Request threshold: </label>
+    <input name="request threshold" id="request-threshold" 
+      type="number" value="5"
+      min="0" max="100" step="1"
+      placeholder="Request threshold...">
+  </div>
+  <div>
+    <label for="load-coefficient">Load coefficient: </label>
+    <input name="load coefficient" id="load-coefficient" 
+      type="number" value="2"
+      min="0" max="100" step="1"
+      placeholder="Load coefficient...">
+  </div>
+  <span>
+    <button id="apply-button">Apply</button>
+    <button id="delete-button">Delete</button>
+  </span>
 
-    <!-- Now, dynamic part -->
-    <h3>Neighbors: </h3>
-    <ul id="neighbors-list" class="neighbors-list">
+  <!-- Now, dynamic part -->
+  <h3>Neighbors: </h3>
+  <ul id="neighbors-list" class="neighbors-list">
 
-    </ul>
-    
-    <h3>Processes</h3>
-    <ul id="processes-list" class="processes-list">
+  </ul>
+  
+  <h3>Processes</h3>
+  <ul id="processes-list" class="processes-list">
 
-    </ul>
-  </aside>
+  </ul>
+</aside>
 
-  <a id="menu-button" href="/menu">Menu</a>
+<a id="menu-button" href="/menu">Menu</a>
 
-  <canvas id="fullscreen-canvas"></canvas>
+<canvas id="fullscreen-canvas"></canvas>
 
-  <script defer type="module" src="/assets/main.js"></script>
-</body>
-</html>
+<script defer type="module" src="/assets/main.js"></script>
+
+{{ template "footer" }}

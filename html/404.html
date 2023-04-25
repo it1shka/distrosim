@@ -1,12 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Not Found</title>
-</head>
-<body>
-  <h1>404: Page Not Found</h1>
-</body>
-</html>
+{{ template "header" "404: Page Not Found" }}
+
+<main id="page-404">
+  <h1></h1>
+</main>
+
+<script defer>
+  const message = '$ error --code=404 --description="Page Not Found"'
+  const element = document.querySelector('#page-404 > h1')
+  const tick = time => new Promise(resolve => setTimeout(resolve, time))
+  const activate = async () => {
+    for (let i = 0; i < message.length; i++) {
+      await tick(50)
+      const content = message.slice(0, i + 1) + '_'
+      element.textContent = content
+    }
+  }
+  activate()
+</script>
+
+{{ template "footer" }}
