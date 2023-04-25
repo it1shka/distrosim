@@ -1,3 +1,3 @@
-import Supervisor from './supervisor.js'
+import './supervisor.js'
 
-new Supervisor()
+// maybe I will add here some additional logic some day...

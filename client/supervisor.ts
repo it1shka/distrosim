@@ -2,7 +2,7 @@ import { Computer, ComputerProperties } from './computer.js'
 import Drawer from './drawer.js'
 import { chooseComputerType, find, showAlert } from './utils.js'
 
-export default class Supervisor {
+class Supervisor {
   private selectedComputer: Computer | null = null
   private computers = new Array<Computer>()
 
@@ -258,3 +258,5 @@ class ComputerInformationForm {
     return integer
   }
 }
+
+export default new Supervisor()

@@ -1,0 +1,19 @@
+#menu-button {
+  $background: #ffd992;
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  padding: 0.2em 0.5em;
+  border: none;
+  font-size: 1em;
+  background-color: $background;
+  border-radius: 0 0 7px 0;
+  color: black;
+  text-decoration: none;
+
+  transition: 0.2s background-color ease;
+  &:hover {
+    background-color: darken($background, 25%);
+  }
+}

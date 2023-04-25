@@ -1,5 +1,5 @@
 import { ComputerType } from './computer.js'
-import Drawer, { Point } from './drawer.js'
+import { Point } from './drawer.js'
 
 export function castToComputerType(value: string) {
   if (!['Min', 'Max', 'MinMax'].includes(value)) {
