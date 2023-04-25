@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"it1shka/distrosim/backend"
 	"log"
 	"net/http"
 	"os"
@@ -30,6 +31,7 @@ func setupServer(server *gin.Engine) {
 	server.GET("/menu", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "menu.html", nil)
 	})
+	backend.SetupDatabaseRequests(server)
 	server.NoRoute(func(ctx *gin.Context) {
 		ctx.HTML(http.StatusNotFound, "404.html", nil)
 	})
@@ -39,7 +41,14 @@ func main() {
 	setupEnvironment(map[string]string{
 		"GIN_MODE": "debug",
 		"PORT":     ":3000",
+		"DB_FILE":  "database.db",
 	})
+
+	dbFile := os.Getenv("DB_FILE")
+	if err := backend.DatabaseConnect(dbFile); err != nil {
+		log.Fatal(err)
+		return
+	}
 
 	gin.SetMode(os.Getenv("GIN_MODE"))
 	server := gin.New()

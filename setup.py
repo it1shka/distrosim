@@ -21,9 +21,10 @@ if not os.path.exists('.env'):
       content = dedent('''
         GIN_MODE=debug
         PORT=:3000
+        DB_FILE=database.db
       ''').strip()
       file.write(content)
-      print(f'Created ".env" file with the following content: {content}')
+      print(f'Created ".env" file with the following content: \n{content}')
   except:
     print('Failed to create ".env"')
 
