@@ -1,12 +1,13 @@
-{{ template "header" "404: Page Not Found" }}
+{{ template "header" .name }}
 
-<main id="page-404">
-  <h1></h1>
+<main id="error-page">
+  <h1> {{ .error }} </h1>
 </main>
 
 <script defer>
-  const message = '$ error --code=404 --description="Page Not Found"'
-  const element = document.querySelector('#page-404 > h1')
+  const element = document.querySelector('#error-page > h1')
+  const message = element.textContent
+  element.textContent = ''
   const tick = time => new Promise(resolve => setTimeout(resolve, time))
   const activate = async () => {
     for (let i = 0; i < message.length; i++) {

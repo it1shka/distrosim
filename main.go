@@ -33,7 +33,10 @@ func setupServer(server *gin.Engine) {
 	})
 	backend.SetupDatabaseRequests(server)
 	server.NoRoute(func(ctx *gin.Context) {
-		ctx.HTML(http.StatusNotFound, "404.html", nil)
+		ctx.HTML(http.StatusNotFound, "error.html", gin.H{
+			"name":  "Error 404: Page Not Found",
+			"error": "$ error --code=404 --description=\"Page Not Found\"",
+		})
 	})
 }
 

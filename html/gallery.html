@@ -1,0 +1,10 @@
+{{ template "header" }}
+
+{{ range .page }}
+<div>
+  <h1>{{ .Name }}</h1>
+  <h2>{{ .AuthorName }}</h2>
+</div>
+{{ end }}
+
+{{ template "footer" }}

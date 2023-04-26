@@ -47,7 +47,17 @@ func SetupDatabaseRequests(app *gin.Engine) {
 	})
 
 	app.GET("/gallery", func(ctx *gin.Context) {
-		// TODO:
+		page, err := getPage(0)
+		if err != nil {
+			ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{
+				"name":  "Error 500: Internal Server Error",
+				"error": "$ error --code=500 --description=\"Internal Server Error: failed to load your gallery\"",
+			})
+			return
+		}
+		ctx.HTML(http.StatusOK, "gallery.html", gin.H{
+			"page": page,
+		})
 	})
 
 	app.GET("/network/:id", func(ctx *gin.Context) {

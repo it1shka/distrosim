@@ -42,3 +42,23 @@ func saveNetwork(scheme *NetworkDataScheme) error {
 
 	return nil
 }
+
+const pageSize = 10
+
+func getPage(page int) (networks []DistributedNetworkModel, err error) {
+	networks, err = nil, nil
+	offset := (page - 1) * pageSize
+	result := database.Offset(offset).Limit(pageSize).Find(&networks)
+	if result.Error != nil {
+		err = result.Error
+	}
+	return
+}
+
+func getNetwork(id uint) (*DistributedNetworkModel, error) {
+	var network DistributedNetworkModel
+	if err := database.Find(&network, id).Error; err != nil {
+		return nil, err
+	}
+	return &network, nil
+}
