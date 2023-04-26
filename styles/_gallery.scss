@@ -1,0 +1,48 @@
+.gallery {
+  padding: 2em 3em;
+  display: flex;
+  flex-wrap: wrap;
+
+  .gallery__network-element {
+    $offset: 5px;
+    width: 260px;
+    height: 150px;
+    position: relative;
+    color: black;
+    margin: 1em 1.5em;
+    border: 1px solid grey;
+    box-shadow: grey $offset $offset 0px 0px;
+    background-color: white;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+
+    transition: 0.2s transform ease-in-out;
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 1.5em;
+      background-color: #58911c;
+      color: white;
+      padding: 0.2em 0.5em;
+      border-radius: 0px 0px 7px 7px;
+      &.featured {
+        background-color: #91761c;
+      }
+    }
+
+    div {
+      padding: 0.5em 1em 2em 1em;
+      p {
+        word-wrap: break-word;
+      }
+      small {
+        position: absolute;
+        bottom: 3px;
+        right: 3px;
+      }
+    }
+  }
+}

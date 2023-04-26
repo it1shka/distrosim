@@ -1,10 +1,42 @@
 {{ template "header" }}
 
+<style>
+  body {
+    background-color: #f0f0f0;;
+  }
+</style>
+
+<main class="gallery">
+  <a class="gallery__network-element" href="/">
+    <h1 class="featured">To The Editor</h1>
+    <div>
+      <small>By Website Creator</small>
+      <p>This link will bring you to the main webpage</p>
+    </div>
+  </a>
+
 {{ range .page }}
-<div>
-  <h1>{{ .Name }}</h1>
-  <h2>{{ .AuthorName }}</h2>
-</div>
+  <a class="gallery__network-element" href="/">
+    <h1>{{ .Name }}</h1>
+    <div>
+      <small>By {{ .AuthorName }}</small>
+      {{ if .Description }}
+      <p>{{ .Description }}</p>
+      {{ else }}
+      <p> No description. </p>
+      {{ end }}
+    </div>
+  </a>
 {{ end }}
+
+  <a id="load-gallery-items" class="gallery__network-element">
+    <h1 class="featured">Load Next Items</h1>
+    <div>
+      <small>By Website Creator</small>
+      <p>Click it, and new items will appear in your feed!</p>
+    </div>
+  </a>
+
+</main>
 
 {{ template "footer" }}
