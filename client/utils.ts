@@ -133,3 +133,53 @@ export async function showMigration(migrationName: string, [x1, y1]: Point, [x2,
   await delay(migrationTime)
   document.body.removeChild(mark)
 }
+
+export interface DistributedNetworkDetails {
+  name: string
+  authorName: string
+  description?: string
+}
+export function getNetworkDetails() {
+  return new Promise<DistributedNetworkDetails | null>(resolve => {
+    const root = find<HTMLDivElement>('.network-panel')
+    const form = root.querySelector('form')!
+    const networkNameInput = root.querySelector('#network-name-input') as HTMLInputElement
+    const authorNameInput = root.querySelector('#author-name-input') as HTMLInputElement
+    const descriptionInput = root.querySelector('#description-input') as HTMLTextAreaElement
+
+    root.onclick = () => {
+      root.classList.add('hidden')
+      resolve(null)
+    }
+
+    form.onclick = event => event.stopPropagation()
+
+    form.onsubmit = event => {
+      event.preventDefault()
+
+      const name = networkNameInput.value
+      const authorName = authorNameInput.value
+      const description = descriptionInput.value
+
+      if (!name || !authorName) {
+        showAlert('Network name and Author name are required!')
+        return
+      }
+
+      root.classList.add('hidden')
+
+      const base = {
+        name: name,
+        authorName: authorName,
+      }
+
+      if (descriptionInput.textContent) {
+        resolve({...base, description: description})
+      } else {
+        resolve(base)
+      }
+    }
+
+    root.classList.remove('hidden')
+  })  
+}

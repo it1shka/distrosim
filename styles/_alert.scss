@@ -1,6 +1,6 @@
 .alert-modal {
   position: fixed;
-  z-index: 50;
+  z-index: 200;
   top: -100%;
   left: 50%;
   transform: translateX(-50%);
@@ -10,7 +10,7 @@
   background-color: white;
   border-radius: 7px;
 
-  box-shadow: #c5c5c5 0px 0px 3px 3px;
+  box-shadow: #666666 3px 3px 0px 0px;
   border: 1px solid #c5c5c5;
 
   &.active {
