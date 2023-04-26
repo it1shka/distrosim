@@ -167,17 +167,14 @@ export function getNetworkDetails() {
       }
 
       root.classList.add('hidden')
+      networkNameInput.value = authorNameInput.value = descriptionInput.value = ''
 
       const base = {
         name: name,
         authorName: authorName,
       }
 
-      if (descriptionInput.textContent) {
-        resolve({...base, description: description})
-      } else {
-        resolve(base)
-      }
+      resolve(description ? {...base, description} : base)
     }
 
     root.classList.remove('hidden')
