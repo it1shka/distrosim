@@ -13,19 +13,11 @@ func DatabaseConnect(databaseFileName string) error {
 		return err
 	}
 	database = db
-	db.AutoMigrate(&ComputerModel{}, &DistributedNetworkModel{})
+	db.AutoMigrate(&DistributedNetworkModel{}, &ComputerModel{}, &ConnectionModel{})
 	return nil
 }
 
 // MODELS:
-
-type ComputerModel struct {
-	NetworkID          uint `gorm:"primaryKey"`
-	Name               string
-	WorkloadThreshold  uint
-	RequestThreshold   uint
-	ProcessCoefficient uint
-}
 
 type DistributedNetworkModel struct {
 	ID          uint `gorm:"primaryKey;autoIncrement"`
@@ -34,27 +26,17 @@ type DistributedNetworkModel struct {
 	Description *string
 }
 
-func saveNetwork(data *DistributedNetworkData) error {
-	network := DistributedNetworkModel{
-		Name:        data.Name,
-		AuthorName:  data.AuthorName,
-		Description: data.Description,
-	}
-	if err := database.Create(&network).Error; err != nil {
-		return err
-	}
-	networkID := network.ID
-	for _, each := range data.Computers {
-		computer := ComputerModel{
-			NetworkID:          networkID,
-			Name:               each.Name,
-			WorkloadThreshold:  each.WorkloadThreshold,
-			RequestThreshold:   each.RequestThreshold,
-			ProcessCoefficient: each.ProcessCoefficient,
-		}
-		if err := database.Create(&computer).Error; err != nil {
-			return err
-		}
-	}
-	return nil
+type ComputerModel struct {
+	NetworkID          uint `gorm:"primaryKey"`
+	Index              uint
+	Name               string
+	WorkloadThreshold  uint
+	RequestThreshold   uint
+	ProcessCoefficient uint
+}
+
+type ConnectionModel struct {
+	NetworkID   uint `gorm:"primaryKey"`
+	FirstIndex  uint
+	SecondIndex uint
 }
