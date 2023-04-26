@@ -180,3 +180,15 @@ export function getNetworkDetails() {
     root.classList.remove('hidden')
   })  
 }
+
+export function postRequest(url: string, data: unknown) {
+  const body = JSON.stringify(data)
+  const headers = new Headers()
+  headers.append('Content-Type', 'application/json')
+  const request = new Request(url, {
+    method: 'POST',
+    headers,
+    body
+  })
+  return fetch(request)
+}

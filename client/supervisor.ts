@@ -172,6 +172,27 @@ class Supervisor {
       }
     }
   }
+
+  // functions for data save
+  getComputerData() {
+    return this.computers.map(computer => computer.getProperties())
+  }
+
+  getConnectionsData() {
+    const output = []
+    for (let i = 0; i < this.computers.length; i++) {
+      for (let j = i + 1; j < this.computers.length; j++) {
+        const first = this.computers[i];
+        const second = this.computers[j];
+        if (!first.isConnected(second)) continue
+        output.push({
+          firstIndex: i,
+          secondIndex: j,
+        } as const)
+      }
+    }
+    return output
+  }
 }
 
 class ComputerInformationForm {

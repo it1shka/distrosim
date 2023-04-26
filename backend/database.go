@@ -27,8 +27,9 @@ type DistributedNetworkModel struct {
 }
 
 type ComputerModel struct {
-	NetworkID          uint `gorm:"primaryKey"`
+	NetworkID          uint `gorm:"index"`
 	Index              uint
+	ComputerType       string
 	Name               string
 	WorkloadThreshold  uint
 	RequestThreshold   uint
@@ -36,7 +37,7 @@ type ComputerModel struct {
 }
 
 type ConnectionModel struct {
-	NetworkID   uint `gorm:"primaryKey"`
+	NetworkID   uint `gorm:"index"`
 	FirstIndex  uint
 	SecondIndex uint
 }
