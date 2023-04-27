@@ -16,7 +16,7 @@
   </a>
 
 {{ range .page }}
-  <a class="gallery__network-element" href="/">
+  <a class="gallery__network-element" href="/?id={{ .ID }}">
     <h1>{{ .Name }}</h1>
     <div>
       <small>By {{ .AuthorName }}</small>
@@ -38,5 +38,59 @@
   </a>
 
 </main>
+
+<script>
+  const addButton = document.getElementById('load-gallery-items')
+  let page = 2
+  addButton.onclick = async () => {
+    try {
+      const responce = await fetch(`/network/page/${page++}`)
+      if (!isStatusOk(responce.status)) {
+        console.log('Failed to retrieve page data: request failed')
+        return
+      }
+      const data = await responce.json()
+      for (const each of data) {
+        mountData(each)
+        await sleep(50)
+      }
+    } catch(error) {
+      console.log(`Failed: ${error}`)
+    }
+  }
+
+  function sleep(time) {
+    return new Promise(resolve => setTimeout(resolve, time))
+  }
+
+  function isStatusOk(status) {
+    return status >= 200 && status < 300
+  }
+
+  const container = document.querySelector('.gallery')
+  async function mountData(data) {
+    const root = document.createElement('a')
+    root.classList.add('gallery__network-element', 'featured')
+    root.href = `/?id=${data.id}`
+
+    const header = document.createElement('h1')
+    header.textContent = data.name
+    root.appendChild(header)
+
+    const div = document.createElement('div')
+    const small = document.createElement('small')
+    small.textContent = `By ${data.authorName}`
+    div.appendChild(small)
+    const p = document.createElement('p')
+    p.textContent = data.description || 'No description.'
+    div.appendChild(p)
+    root.appendChild(div)
+
+    container.insertBefore(root, addButton)
+
+    await sleep(1)
+    root.classList.remove('featured')
+  }
+</script>
 
 {{ template "footer" }}

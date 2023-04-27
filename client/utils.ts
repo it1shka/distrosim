@@ -139,6 +139,12 @@ export interface DistributedNetworkDetails {
   authorName: string
   description?: string
 }
+
+function lenBetween(str: string, begin: number, end?: number) {
+  const len = str.length
+  return end ? (len >= begin && len <= end) : (len >= begin)
+}
+
 export function getNetworkDetails() {
   return new Promise<DistributedNetworkDetails | null>(resolve => {
     const root = find<HTMLDivElement>('.network-panel')
@@ -163,6 +169,16 @@ export function getNetworkDetails() {
 
       if (!name || !authorName) {
         showAlert('Network name and Author name are required!')
+        return
+      }
+
+      if (!lenBetween(name, 3, 18) || !lenBetween(authorName, 3, 18)) {
+        showAlert(`Name and author name should contain between 3 and 18 characters!`)
+        return
+      }
+
+      if (!lenBetween(description, 0, 80)) {
+        showAlert('Description should contain up to 80 characters.')
         return
       }
 

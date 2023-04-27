@@ -18,7 +18,7 @@
     cursor: pointer;
 
     transition: 0.2s transform ease-in-out;
-    &:hover {
+    &:hover, &.featured {
       transform: scale(1.05);
     }
 

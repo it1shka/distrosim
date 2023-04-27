@@ -2,15 +2,16 @@ package backend
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 type NetworkDataScheme struct {
 	Network struct {
-		Name        string  `json:"name"`
-		AuthorName  string  `json:"authorName"`
-		Description *string `json:"description,omitempty"`
+		Name        string  `json:"name" binding:"required,min=3,max=20"`
+		AuthorName  string  `json:"authorName" binding:"required,min=3,max=20"`
+		Description *string `json:"description,omitempty" binding:"max=100"`
 	} `json:"network"`
 
 	Computers []struct {
@@ -46,8 +47,31 @@ func SetupDatabaseRequests(app *gin.Engine) {
 		ctx.Status(http.StatusCreated)
 	})
 
+	app.GET("/network/:id", func(ctx *gin.Context) {
+		// TODO:
+	})
+
+	app.GET("/network/page/:page", func(ctx *gin.Context) {
+		pageStr := ctx.Param("page")
+		page, err := strconv.Atoi(pageStr)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": "\"page\" parameter is not an integer",
+			})
+			return
+		}
+		pageContent, err := getPage(page)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Failed to retrieve page content",
+			})
+			return
+		}
+		ctx.JSON(http.StatusOK, pageContent)
+	})
+
 	app.GET("/gallery", func(ctx *gin.Context) {
-		page, err := getPage(0)
+		page, err := getPage(1)
 		if err != nil {
 			ctx.HTML(http.StatusInternalServerError, "error.html", gin.H{
 				"name":  "Error 500: Internal Server Error",
@@ -58,10 +82,6 @@ func SetupDatabaseRequests(app *gin.Engine) {
 		ctx.HTML(http.StatusOK, "gallery.html", gin.H{
 			"page": page,
 		})
-	})
-
-	app.GET("/network/:id", func(ctx *gin.Context) {
-		// TODO:
 	})
 
 }

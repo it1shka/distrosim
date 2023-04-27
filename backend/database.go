@@ -20,10 +20,10 @@ func DatabaseConnect(databaseFileName string) error {
 // MODELS:
 
 type DistributedNetworkModel struct {
-	ID          uint `gorm:"primaryKey;autoIncrement"`
-	Name        string
-	AuthorName  string
-	Description *string
+	ID          uint    `gorm:"primaryKey;autoIncrement" json:"id"`
+	Name        string  `gorm:"size:20" json:"name"`
+	AuthorName  string  `gorm:"size:20" json:"authorName"`
+	Description *string `gorm:"size:100" json:"description"`
 }
 
 type ComputerModel struct {

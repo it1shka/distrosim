@@ -27,24 +27,28 @@ interface NetworkDataScheme {
 
 const saveButton = find<HTMLButtonElement>('#save-button')
 saveButton.onclick = async () => {
-  const networkData = await getNetworkDetails()
-  if (networkData === null) return
-  const computersData = Supervisor.getComputerData()
-  const connectionsData = Supervisor.getConnectionsData()
+  try {
+    const networkData = await getNetworkDetails()
+    if (networkData === null) return
+    const computersData = Supervisor.getComputerData()
+    const connectionsData = Supervisor.getConnectionsData()
 
-  const scheme: NetworkDataScheme = {
-    network: networkData,
-    computers: computersData,
-    connections: connectionsData
-  }
+    const scheme: NetworkDataScheme = {
+      network: networkData,
+      computers: computersData,
+      connections: connectionsData
+    }
 
-  // and then we should send it to server
-  // TODO:
-  const responce = await postRequest('/network/new', scheme)
-  if (responce.status >= 200 && responce.status < 300) {
-    showAlert('Successfully saved your work!')
-    return
+    // and then we should send it to server
+    // TODO:
+    const responce = await postRequest('/network/new', scheme)
+    if (responce.status >= 200 && responce.status < 300) {
+      showAlert('Successfully saved your work!')
+      return
+    }
+    const { error } = await responce.json() as { error: string }
+    showAlert(error)
+  } catch (_) {
+    showAlert('Failed to save your network!')
   }
-  const { error } = await responce.json() as { error: string }
-  showAlert(error)
 }
