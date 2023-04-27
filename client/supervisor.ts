@@ -67,10 +67,14 @@ class Supervisor {
       each.connectTo(computer)
     }
 
+    this.addComputer(computer)
+    this.onComputerClick(computer)
+  }
+
+  addComputer(computer: Computer) {
     computer.getReference()
       .addEventListener('dblclick', () => this.onComputerClick(computer))
     this.computers.push(computer)
-    this.onComputerClick(computer)
   }
 
   private onComputerClick = (computer: Computer) => {
@@ -175,7 +179,13 @@ class Supervisor {
 
   // functions for data save
   getComputerData() {
-    return this.computers.map(computer => computer.getProperties())
+    return this.computers.map(computer => {
+      const [positionX, positionY] = computer.getPosition()
+      return {
+        ...computer.getProperties(),
+        positionX, positionY
+      }
+    })
   }
 
   getConnectionsData() {

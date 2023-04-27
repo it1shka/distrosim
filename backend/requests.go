@@ -14,11 +14,13 @@ type NetworkInformationScheme struct {
 }
 
 type ComputerScheme struct {
-	Name               string `json:"name"`
-	ComputerType       string `json:"computerType"`
-	WorkloadThreshold  uint   `json:"workloadThreshold"`
-	RequestThreshold   uint   `json:"requestThreshold"`
-	ProcessCoefficient uint   `json:"processCoefficient"`
+	Name               string  `json:"name"`
+	ComputerType       string  `json:"computerType"`
+	WorkloadThreshold  uint    `json:"workloadThreshold"`
+	RequestThreshold   uint    `json:"requestThreshold"`
+	ProcessCoefficient uint    `json:"processCoefficient"`
+	PositionX          float64 `json:"positionX"`
+	PositionY          float64 `json:"positionY"`
 }
 
 type ConnectionScheme struct {

@@ -1,4 +1,4 @@
-import { ComputerType } from './computer.js'
+import { Computer, ComputerType } from './computer.js'
 import Supervisor from './supervisor.js'
 import { find, getNetworkDetails, postRequest, showAlert } from './utils.js'
 
@@ -17,6 +17,8 @@ interface NetworkDataScheme {
     workloadThreshold: number
     requestThreshold: number
     processCoefficient: number
+    positionX: number
+    positionY: number
   }>
 
   connections: Array<{
@@ -52,3 +54,58 @@ saveButton.onclick = async () => {
     showAlert('Failed to save your network!')
   }
 }
+
+async function initialize() {
+  try {
+    const urlValue = document.location.toString()
+    const url = new URL(urlValue)
+    const params = url.searchParams
+    const id = params.get("id")
+    if (id === null) return
+
+    const result = await fetch(`/network/${id}`)
+    if (result.status < 200 || result.status >= 300) {
+      const { error } = await result.json() as { error: string }
+      showAlert(`Failed to retrieve network: ${error}`)
+      return
+    }
+
+    const scheme = await result.json() as NetworkDataScheme
+    showAlert(`Loaded ${scheme.network.name} by ${scheme.network.authorName}`)
+
+    mount(scheme.computers, scheme.connections)
+  } catch (_) {
+    showAlert('Initialization failed')
+  }
+}
+
+function mount(computers: NetworkDataScheme['computers'], connections: NetworkDataScheme['connections']) {
+  const computerObjects = computers.map(data => {
+    const {
+      name, computerType, 
+      workloadThreshold, requestThreshold, 
+      processCoefficient,
+      positionX, positionY
+    } = data
+
+    const computer = new Computer(computerType, positionX, positionY)
+    computer.setProperties({
+      name, workloadThreshold, requestThreshold,
+      processCoefficient, computerType
+    })
+
+    return computer
+  })
+
+  connections.forEach(({ firstIndex, secondIndex }) => {
+    const a = computerObjects[firstIndex]
+    const b = computerObjects[secondIndex]
+
+    a.connectTo(b)
+    b.connectTo(a)
+  })
+
+  computerObjects.forEach(obj => Supervisor.addComputer(obj))
+}
+
+initialize()

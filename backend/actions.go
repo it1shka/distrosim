@@ -22,6 +22,8 @@ func saveNetwork(scheme *NetworkDataScheme) error {
 			WorkloadThreshold:  computerData.WorkloadThreshold,
 			RequestThreshold:   computerData.RequestThreshold,
 			ProcessCoefficient: computerData.ProcessCoefficient,
+			PositionX:          computerData.PositionX,
+			PositionY:          computerData.PositionY,
 		}
 		computers[i] = computer
 	}
@@ -97,6 +99,8 @@ func getNetworkById(id uint) (*NetworkDataScheme, error) {
 			WorkloadThreshold:  each.WorkloadThreshold,
 			RequestThreshold:   each.RequestThreshold,
 			ProcessCoefficient: each.ProcessCoefficient,
+			PositionX:          each.PositionX,
+			PositionY:          each.PositionY,
 		}
 		if each.Index >= uint(len(computersScheme)) {
 			return nil, errors.New("wrong computer index")

@@ -34,6 +34,8 @@ type ComputerModel struct {
 	WorkloadThreshold  uint
 	RequestThreshold   uint
 	ProcessCoefficient uint
+	PositionX          float64
+	PositionY          float64
 }
 
 type ConnectionModel struct {
