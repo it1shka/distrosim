@@ -1,4 +1,4 @@
-{{ template "header" }}
+{{ template "header" "Gallery" }}
 
 <style>
   body {
@@ -50,6 +50,12 @@
         return
       }
       const data = await responce.json()
+
+      if (data.length <= 0) {
+        addButton.remove()
+        return
+      }
+
       for (const each of data) {
         mountData(each)
         await sleep(50)
@@ -67,6 +73,17 @@
     return status >= 200 && status < 300
   }
 
+  const colors = [
+    '#8c221b', '#8c571b', '#7f8c1b', '#4c8c1b',
+    '#1b8c2a', '#1b8c68', '#1b8c68', '#461b8c',
+    '#461b8c'
+  ]
+
+  function pickRandomColor() {
+    const index = ~~(Math.random() * colors.length)
+    return colors[index]
+  }
+
   const container = document.querySelector('.gallery')
   async function mountData(data) {
     const root = document.createElement('a')
@@ -75,6 +92,7 @@
 
     const header = document.createElement('h1')
     header.textContent = data.name
+    header.style.backgroundColor = pickRandomColor()
     root.appendChild(header)
 
     const div = document.createElement('div')
