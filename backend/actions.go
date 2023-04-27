@@ -1,5 +1,7 @@
 package backend
 
+import "errors"
+
 func saveNetwork(scheme *NetworkDataScheme) error {
 	network := DistributedNetworkModel{
 		Name:        scheme.Network.Name,
@@ -61,4 +63,58 @@ func getNetwork(id uint) (*DistributedNetworkModel, error) {
 		return nil, err
 	}
 	return &network, nil
+}
+
+func getNetworkById(id uint) (*NetworkDataScheme, error) {
+	var networkData DistributedNetworkModel
+	if err := database.Find(&networkData, id).Error; err != nil {
+		return nil, err
+	}
+
+	var computersData []ComputerModel
+	result := database.Find(&computersData, "network_id = ?", networkData.ID)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	var connectionsData []ConnectionModel
+	result = database.Find(&connectionsData, "network_id = ?", networkData.ID)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	networkScheme := NetworkInformationScheme{
+		Name:        networkData.Name,
+		AuthorName:  networkData.AuthorName,
+		Description: networkData.Description,
+	}
+
+	computersScheme := make([]ComputerScheme, len(computersData))
+	for _, each := range computersData {
+		computerScheme := ComputerScheme{
+			Name:               each.Name,
+			ComputerType:       each.ComputerType,
+			WorkloadThreshold:  each.WorkloadThreshold,
+			RequestThreshold:   each.RequestThreshold,
+			ProcessCoefficient: each.ProcessCoefficient,
+		}
+		if each.Index >= uint(len(computersScheme)) {
+			return nil, errors.New("wrong computer index")
+		}
+		computersScheme[each.Index] = computerScheme
+	}
+
+	connectionsScheme := make([]ConnectionScheme, len(connectionsData))
+	for i, each := range connectionsData {
+		connectionsScheme[i] = ConnectionScheme{
+			FirstIndex:  each.FirstIndex,
+			SecondIndex: each.SecondIndex,
+		}
+	}
+
+	return &NetworkDataScheme{
+		Network:     networkScheme,
+		Computers:   computersScheme,
+		Connections: connectionsScheme,
+	}, nil
 }

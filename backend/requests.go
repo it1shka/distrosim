@@ -7,25 +7,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type NetworkInformationScheme struct {
+	Name        string  `json:"name" binding:"required,min=3,max=20"`
+	AuthorName  string  `json:"authorName" binding:"required,min=3,max=20"`
+	Description *string `json:"description,omitempty" binding:"max=100"`
+}
+
+type ComputerScheme struct {
+	Name               string `json:"name"`
+	ComputerType       string `json:"computerType"`
+	WorkloadThreshold  uint   `json:"workloadThreshold"`
+	RequestThreshold   uint   `json:"requestThreshold"`
+	ProcessCoefficient uint   `json:"processCoefficient"`
+}
+
+type ConnectionScheme struct {
+	FirstIndex  uint `json:"firstIndex"`
+	SecondIndex uint `json:"secondIndex"`
+}
+
 type NetworkDataScheme struct {
-	Network struct {
-		Name        string  `json:"name" binding:"required,min=3,max=20"`
-		AuthorName  string  `json:"authorName" binding:"required,min=3,max=20"`
-		Description *string `json:"description,omitempty" binding:"max=100"`
-	} `json:"network"`
-
-	Computers []struct {
-		Name               string `json:"name"`
-		ComputerType       string `json:"computerType"`
-		WorkloadThreshold  uint   `json:"workloadThreshold"`
-		RequestThreshold   uint   `json:"requestThreshold"`
-		ProcessCoefficient uint   `json:"processCoefficient"`
-	} `json:"computers"`
-
-	Connections []struct {
-		FirstIndex  uint `json:"firstIndex"`
-		SecondIndex uint `json:"secondIndex"`
-	} `json:"connections"`
+	Network     NetworkInformationScheme `json:"network"`
+	Computers   []ComputerScheme         `json:"computers"`
+	Connections []ConnectionScheme       `json:"connections"`
 }
 
 func SetupDatabaseRequests(app *gin.Engine) {
@@ -48,7 +52,22 @@ func SetupDatabaseRequests(app *gin.Engine) {
 	})
 
 	app.GET("/network/:id", func(ctx *gin.Context) {
-		// TODO:
+		idStr := ctx.Param("id")
+		id, err := strconv.ParseUint(idStr, 10, 32)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": "\"id\" is not an unsigned integer",
+			})
+			return
+		}
+		network, err := getNetworkById(uint(id))
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"error": "failed retrieve your network",
+			})
+			return
+		}
+		ctx.JSON(http.StatusOK, network)
 	})
 
 	app.GET("/network/page/:page", func(ctx *gin.Context) {
