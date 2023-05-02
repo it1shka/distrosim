@@ -10,7 +10,7 @@ import (
 type NetworkInformationScheme struct {
 	Name        string  `json:"name" binding:"required,min=3,max=20"`
 	AuthorName  string  `json:"authorName" binding:"required,min=3,max=20"`
-	Description *string `json:"description,omitempty" binding:"max=100"`
+	Description *string `json:"description,omitempty"`
 }
 
 type ComputerScheme struct {
@@ -44,6 +44,17 @@ func SetupDatabaseRequests(app *gin.Engine) {
 			})
 			return
 		}
+
+		// manual validation if description is less then 100
+		// characters
+		maybeDescription := scheme.Network.Description
+		if maybeDescription != nil && len(*maybeDescription) > 100 {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Description is too long!",
+			})
+			return
+		}
+
 		if err := saveNetwork(&scheme); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"error": "Failed to save your network",
